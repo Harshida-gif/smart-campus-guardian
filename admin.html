@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus Gurdian-Admin Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" >
+
+</head>
+<body>
+    <h1>UNIVERSITY OF ENGEENING COLLEGE </h1>
+    <div class="AdminLoginForm">
+        <h2>Admin Login</h2>
+        <form id="adminLoginForm">
+            <label for="adminphone">Admin Phone Number:</label>
+            <input type="tel" id="adminphone" placeholder="enter 10-digit mobile Number:" 
+            maxlength="10" minlength="10" pattern="[0-9]{10}" inputmode="numeric" required>
+            <small id="phoneError"></small>
+            <br><br>
+            <label for="adminPassword">Password:</label>
+            <input type="password" id="adminPassword" placeholder="Enter password"
+             maxlength="6" minlength="6" inputmode="numeric" pattern="[0-9]{6}" required>
+            <br><br>
+            <button type="submit">Login</button>
+            <br> <br>
+            
+
+        </form>
+    </div>
+    <script>
+const savedPhone = localStorage.getItem("adminPhone");
+
+if (savedPhone) {
+    document.getElementById("adminphone").value = savedPhone;
+}
+
+document.getElementById("adminphone").addEventListener("input", function () {
+    const phoneError = document.getElementById("phoneError");
+
+    if (this.value.length > 0 && this.value.length < 10) {
+        phoneError.textContent = "Please enter exactly 10 digits.";
+        phoneError.style.color = "red";
+    } else if (this.value.length === 10) {
+        phoneError.textContent = "";
+    }
+});
+
+
+document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const phone = document.getElementById("adminphone").value.trim();
+    const password = document.getElementById("adminPassword").value;
+    const phoneError = document.getElementById("phoneError");
+
+    if (!/^\d{10}$/.test(phone)) {
+        phoneError.textContent = "Please enter exactly 10 digits.";
+        phoneError.style.color = "red";
+        return;
+    }
+
+    phoneError.textContent = "";
+
+    localStorage.setItem("adminPhone", phone);
+
+    const ADMIN_PHONE = "0123456789";
+    const ADMIN_PASSWORD = localStorage.getItem("adminPassword")||"012345";
+
+    if (phone === ADMIN_PHONE && password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("adminLoggedIn", "true");
+        window.location.href = "admin-dashboard.html";
+    } else {
+        alert("Invalid phone number/password");
+    }
+});
+</script>
+</body>
+<a href="/frontend/index.html"><mark>Back to Homepage</mark></a>
+</html>

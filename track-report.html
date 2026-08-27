@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Campus Guardian - Track Report</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+
+    <h1>Smart Campus Guardian</h1>
+
+    <div class="admin-dashboard">
+
+        <h2>Track Your Report</h2>
+
+        <p>Enter your Report ID to check the current status.</p>
+
+        <label for="reportId">Report ID:</label>
+
+        <input
+            type="text"
+            id="reportId"
+            placeholder="Example: RPT-123456789"
+        >
+
+        <br><br>
+
+        <button id="trackButton">
+            Track Report
+        </button>
+
+        <br><br>
+
+        <div id="trackResult"></div>
+
+        <br>
+
+        <a href="index.html">Back to Home</a>
+
+    </div>
+
+    <script>
+
+        const trackButton =
+            document.getElementById("trackButton");
+
+        const reportIdInput =
+            document.getElementById("reportId");
+
+        const trackResult =
+            document.getElementById("trackResult");
+
+
+        trackButton.addEventListener("click", function () {
+
+            const enteredId =
+                reportIdInput.value.trim();
+
+
+            if (enteredId === "") {
+
+                trackResult.innerHTML =
+                    "<p>Please enter your Report ID.</p>";
+
+                return;
+            }
+
+
+            const savedReports =
+                JSON.parse(
+                    localStorage.getItem("reports")
+                ) || [];
+
+
+            const report =
+                savedReports.find(function (item) {
+
+                    return item.reportId === enteredId;
+
+                });
+
+
+            if (!report) {
+
+                trackResult.innerHTML = `
+                    <p>
+                        <strong>Report not found.</strong>
+                    </p>
+
+                    <p>
+                        Please check your Report ID
+                        and try again.
+                    </p>
+                `;
+
+                return;
+            }
+
+
+            trackResult.innerHTML = `
+
+                <div class="report-card">
+
+                    <h3>Report Found</h3>
+
+                    <p>
+                        <strong>Report ID:</strong>
+                        ${report.reportId}
+                    </p>
+
+                    <p>
+                        <strong>Category:</strong>
+                        ${report.category}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        ${report.location}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${report.status || "Reported"}
+                    </p>
+
+                </div>
+
+            `;
+
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Campus Guardian - Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+
+    <h1>Smart Campus Guardian</h1>
+
+    <div class="admin-dashboard">
+        
+
+        <h2>Admin Dashboard</h2>
+
+
+        <p>Welcome, Admin.</p>
+        <br><br>
+        <button id="logoutButton">Logout</button>
+        <br><br>
+        <button id="changePassword">change password</button>
+
+        <hr>
+        
+        <div class="report-summary">
+
+    <div class="summary-card">
+        <h3>Total Reports</h3>
+        <p id="totalReports">0</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>Reported</h3>
+        <p id="reportedCount">0</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>In Progress</h3>
+        <p id="inProgressCount">0</p>
+    </div>
+    <div class="summary-card">
+        <h3>Under Review</h3>
+        <p id="underReview">0</p>
+    </div>
+
+
+    <div class="summary-card">
+        <h3>Resolved</h3>
+        <p id="resolvedCount">0</p>
+    </div>
+    <label for="statusFilter">Filter reports:</label>
+        <select id="statusFilter">
+            <option value="All">All reports</option>
+            <option value="Reported">reported</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Under Review">under Review</option>
+            <option value="Resolved">Resolved</option>
+            
+
+        </select>
+        <br><br>
+    <div>
+
+        <h2>Submitted Reports</h2>
+
+        <div id="adminReports"></div>
+        
+        
+        
+
+    </div>
+
+
+    <script>
+
+        // Check admin login
+        const loggedIn = sessionStorage.getItem("adminLoggedIn");
+
+        if (loggedIn !== "true") {
+            window.location.href = "admin.html";
+        }
+
+
+        // Logout
+        // Logout
+document.getElementById("logoutButton").addEventListener("click", function () {
+
+    sessionStorage.removeItem("adminLoggedIn");
+
+    window.location.href = "admin.html";
+
+});
+
+
+// Change Password
+document.getElementById("changePassword").addEventListener("click", function () {
+
+    window.location.href = "change-password.html";
+
+});
+
+
+        // Get report container
+        const adminReports = document.getElementById("adminReports");
+        const statusFilter = document.getElementById("statusFilter")
+
+
+        // Get saved reports
+        const savedReports =
+            JSON.parse(localStorage.getItem("reports")) || [];
+            let reportedCount = 0;
+let inProgressCount = 0;
+let underReview =0;
+let resolvedCount = 0;
+
+savedReports.forEach(function (report) {
+
+    if (!report.status) {
+        report.status = "Reported";
+    }
+
+    if (report.status === "Reported") {
+        reportedCount++;
+    }
+
+    if (report.status === "In Progress") {
+        inProgressCount++;
+    }
+    if (report.status === "Under Review") {
+        underReview++;
+    }
+
+    if (report.status === "Resolved") {
+        resolvedCount++;
+    }
+
+});
+
+document.getElementById("totalReports").textContent =
+    savedReports.length;
+
+document.getElementById("reportedCount").textContent =
+    reportedCount;
+
+document.getElementById("inProgressCount").textContent =
+    inProgressCount;
+document.getElementById("underReview").textContent =
+    underReview;
+
+document.getElementById("resolvedCount").textContent =
+    resolvedCount;
+
+
+        // Show every saved report
+        savedReports.forEach(function (report, index) {
+
+            // Give old reports a default status
+            if (!report.status) {
+                report.status = "Reported";
+            }
+
+
+            // Give every report a unique ID
+            if (!report.reportId) {
+                report.reportId =
+                    "RPT-" + Date.now() + "-" + index;
+            }
+
+
+            // Create report card
+            const reportCard = document.createElement("div");
+
+            reportCard.className = "report-card";
+
+
+            // Report content
+            reportCard.innerHTML = `
+                <h3>Campus Issue Report</h3>
+
+                <p>
+                    <strong>Report ID:</strong>
+                    ${report.reportId}
+                </p>
+
+                <p>
+                    <strong>Name:</strong>
+                    ${report.name}
+                </p>
+
+                <p>
+                    <strong>USN:</strong>
+                    ${report.usn}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    ${report.location}
+                </p>
+
+                <p>
+                    <strong>Category:</strong>
+                    ${report.category}
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    ${report.description}
+                </p>
+
+                <p>
+                    <strong>Rating:</strong>
+                    ${report.ratings}
+                </p>
+                ${report.photo ? `
+    <p>
+        <strong>Uploaded Photo:</strong>
+    </p>
+
+    <img
+        src="${report.photo}"
+        alt="Uploaded report photo"
+        style="max-width: 300px; max-height: 300px; display: block; margin: 10px 0;"
+        >
+        ` : ""}
+
+                <p>
+                    <strong>Status:</strong>
+
+                    <select class="report-status">
+
+                        <option value="Reported"
+                            ${report.status === "Reported" ? "selected" : ""}>
+                            Reported
+                        </option>
+
+                        
+
+                        <option value="In Progress"
+                            ${report.status === "In Progress" ? "selected" : ""}>
+                            In Progress
+                        </option>
+                        <option value="Under Review"
+                            ${report.status === "Under Review" ? "selected" : ""}>
+                            Under Review
+                        </option>
+
+                        <option value="Resolved"
+                            ${report.status === "Resolved" ? "selected" : ""}>
+                            Resolved
+                        </option>
+
+                    </select>
+                </p>
+
+                <button class="delete-report">
+                    Delete Report
+                </button>
+            `;
+
+
+            // Put card on dashboard
+            adminReports.appendChild(reportCard);
+
+
+            // Status dropdown
+            const statusSelect =
+            reportCard.querySelector(".report-status");
+
+            statusSelect.addEventListener("change", function () {
+                report.status = this.value;
+
+
+                localStorage.setItem(
+                    "reports",
+                    JSON.stringify(savedReports)
+            );
+
+    // Update counters
+    let reported = 0;
+    let underReview = 0;
+    let inProgress = 0;
+    let resolved = 0;
+
+    savedReports.forEach(function (item) {
+
+        if (!item.status) {
+            item.status = "Reported";
+        }
+
+        if (item.status === "Reported") {
+            reported++;
+        }
+
+        if (item.status === "Under Review") {
+            underReview++;
+        }
+
+        if (item.status === "In Progress") {
+            inProgress++;
+        }
+
+        if (item.status === "Resolved") {
+            resolved++;
+        }
+
+    });
+
+    document.getElementById("totalReports").textContent =
+        savedReports.length;
+
+    document.getElementById("reportedCount").textContent =
+        reported;
+
+    document.getElementById("underReview").textContent =
+        underReview;
+
+    document.getElementById("inProgressCount").textContent =
+        inProgress;
+
+    document.getElementById("resolvedCount").textContent =
+        resolved;
+
+});
+
+                // Delete button
+                const deleteButton =
+                    reportCard.querySelector(".delete-report");
+
+
+                deleteButton.addEventListener("click", function () {
+
+                    const confirmDelete =
+                        confirm("Are you sure you want to delete this report?");
+
+
+                if (!confirmDelete) {
+                    return;
+                }
+
+
+                const reportIndex =
+                    savedReports.findIndex(function (item) {
+
+                        return item.reportId === report.reportId;
+
+                    });
+
+
+                if (reportIndex !== -1) {
+
+    savedReports.splice(reportIndex, 1);
+
+    localStorage.setItem(
+        "reports",
+        JSON.stringify(savedReports)
+    );
+
+    // Update counters after deleting
+    let reported = 0;
+    let underReview = 0;
+    let inProgress = 0;
+    let resolved = 0;
+
+    savedReports.forEach(function (item) {
+
+        if (item.status === "Reported") {
+            reported++;
+        }
+
+        if (item.status === "Under Review") {
+            underReview++;
+        }
+
+        if (item.status === "In Progress") {
+            inProgress++;
+        }
+
+        if (item.status === "Resolved") {
+            resolved++;
+        }
+
+    });
+
+    document.getElementById("totalReports").textContent =
+        savedReports.length;
+
+    document.getElementById("reportedCount").textContent =
+        reported;
+
+    document.getElementById("underReview").textContent =
+        underReview;
+
+    document.getElementById("inProgressCount").textContent =
+        inProgress;
+
+    document.getElementById("resolvedCount").textContent =
+        resolved;
+}
+
+
+                reportCard.remove();
+
+            });
+
+        });
+        // Report status filter
+        statusFilter.addEventListener("change", function () {
+
+            const selectedStatus = this.value;
+
+            const reportCards =
+                document.querySelectorAll(".report-card");
+
+            reportCards.forEach(function (card, index) {
+
+                const report = savedReports[index];
+
+                if (
+                    selectedStatus === "All" ||
+                    report.status === selectedStatus
+                ) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+
+            });
+
+        });
+
+
+
+        // Save generated IDs/statuses for old reports
+        localStorage.setItem(
+            "reports",
+            JSON.stringify(savedReports)
+        );
+
+    </script>
+    <a href="/frontend/index.html"><mark>Back to Home</mark></a>
+
+</body>
+</html>

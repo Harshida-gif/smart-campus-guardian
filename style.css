@@ -1,0 +1,90 @@
+body{
+    background-color: rgba(233, 240, 13, 0.932);
+}
+.subtitle{
+    color: #e30c0c;
+}
+h1{
+    text-align:center;
+    color:#fb2807;
+    font-size: 32px;
+}
+form{
+    background-color:rgb(254, 254, 254);
+    width: 400px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 12px;
+
+}
+label{
+    font-weight: bold;
+    display:rgb(0, 0, 0);
+    margin-bottom:6px;
+}
+input,
+select,
+textarea{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px ;
+    border: 1px solid#050505;
+    border-radius: 6px;
+    box-sizing: border-box;
+
+}
+button{
+    width: 100%;
+    padding: 12px;
+    background-color: #e60e06;
+    color: #ede6e6;
+    border:none;
+    border-radius: 6cap;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #10e422;
+}
+@media(max-width:500px){
+    form{
+        max-width: 100%;
+        padding: 50px;
+    }
+    h1{
+        font-size: 26px;
+    }
+}
+#reports{
+    width: 400px;
+    margin: 30px auto;
+}
+#reports h2{
+    text-align: center;
+    color: #f6ea09;
+}
+.report-card{
+    background-color: rgb(227, 217, 19);
+    padding: 20px;
+    margin-top: 20px ;
+    border-radius: 12px ;
+    box-shadow: 0 4px 12px rgba(0,0, 0,0.15);
+}
+.report-card h3{
+    margin-top:0 ;
+    
+}
+.report-card p {
+    margin: 8px 0;
+}
+/* student page:submitted reports are admin - only*/
+#Report{
+    display: none;
+}
+.report-status {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #efbaba;
+    font-weight: bold;
+    cursor: pointer;
+}

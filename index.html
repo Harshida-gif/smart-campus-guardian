@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus Gurdian</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <h1>UNIVERSITY OF ENGEENING COLLEGE</h1>
+    <h2>Smart Campus Gurdian</h2>
+    <div class="track-report-link">
+    <h3>Already submitted a report?</h3>
+
+    <a href="track-report.html">
+        <button type="button">Track My Report</button>
+    </a>
+</div>
+    <h3><a href="admin.html"> Admin log in </a> </h3>
+    <p class="subtitle">Report problems around your campus.</p>
+    <form id="issueForm">
+        <label for="userName"> Your name:</label>
+        <input type="text" name="userName" id="userName" autocomplete="name" required>
+        <br><br>
+        <label for="USN">USN:</label>
+        <input type="text" name="USN" id="USN" required>
+        <br><br>
+        <label for="location">Location: </label>
+        <input type="text" name="location" id="location" required>
+        <br><br>
+        <label for="category">Issue Category:</label>
+        <select id="category" name="category" required>
+            <option value=""disabled selected>select a category</option>
+            <option value="Complaint">Complaint on lectures</option>
+            <option value="Water">Water Leakage</option>
+            <option value="Cleaness">Cleaness</option>
+            <option value="Broken">Broken Light</option>
+            <option value="Waste">Waste/Garbege</option>
+            <option value="Damaged">Damaged Furniture</option>
+            <option value="Safety">Safety Issue</option>
+            <option value="Ragging">Ragging</option>
+            <option value="Other">Other</option>
+        </select>
+        <br><br>
+        <label for="description">Describe your problem: </label>
+        <br><br>
+        <textarea id="description" name="description"  rows="10"  required></textarea>
+        <br><br>
+        <label for="photo">Upload a photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*" required>
+        <br><br>
+        <label for="Suggestion">Suggestion Box:  </label>
+        <br><br>
+        <textarea id="Suggestion" name="Suggestion" rows="10" cols="50" required></textarea>
+        <br><br>
+        <label for="ratings">Ratings:</label>
+        <select id="ratings" name="ratings" required >
+            <option value=""disabled selected>Ratings</option>
+            <option>5 Very well</option>
+            <option>4 Good</option>
+            <option>3 Better</option>
+            <option>2 Poor</option>
+            <option>1 Very poor</option>
+        </select>
+        <br><br>
+        <button type="submit">Report Issue</button>  
+    </form>
+    <section id="Report">
+        <h2>Submitted Report</h2>
+        <div id="reports"></div>
+        <p id="successMessage"></p>
+    </section>
+<script src="script.js"></script>
+
+    
+</body>
+</html>
